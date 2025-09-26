@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { use, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import SearchBar from "../components/SearchBar";
 import Filters from "../components/Filters";
 import PropertyCard from "../components/PropertyCard";
@@ -13,7 +13,8 @@ const properties = [
     type: "Apartment",
     bedrooms: 3,
     bathrooms: 2,
-    image: "https://res.cloudinary.com/dlu8e511s/image/upload/v1758721250/066eddefa10a67-estate-available-for-fastest-finger-for-an-investor-28-units-block-of-flats-for-sale-ajah-lagos_hbusxc.jpg",
+    image:
+      "https://res.cloudinary.com/dlu8e511s/image/upload/v1758721250/066eddefa10a67-estate-available-for-fastest-finger-for-an-investor-28-units-block-of-flats-for-sale-ajah-lagos_hbusxc.jpg",
     link: "/LuxuryApartment",
   },
   {
@@ -23,7 +24,8 @@ const properties = [
     type: "House",
     bedrooms: 5,
     bathrooms: 4,
-    image: "https://res.cloudinary.com/dlu8e511s/image/upload/v1758723394/a9070607_1_lvnog3.avif",
+    image:
+      "https://res.cloudinary.com/dlu8e511s/image/upload/v1758723394/a9070607_1_lvnog3.avif",
     link: "/BeachHouse",
   },
   {
@@ -33,7 +35,8 @@ const properties = [
     type: "Duplex",
     bedrooms: 4,
     bathrooms: 3,
-    image: "https://res.cloudinary.com/dlu8e511s/image/upload/v1758774752/068d3abc83014b-2-units-of-3-bedroom-flat-detached-duplexes-for-sale-lekki-ibeju-lagos_asw0bm.jpg",
+    image:
+      "https://res.cloudinary.com/dlu8e511s/image/upload/v1758774752/068d3abc83014b-2-units-of-3-bedroom-flat-detached-duplexes-for-sale-lekki-ibeju-lagos_asw0bm.jpg",
     link: "/ModernDuplex",
   },
   {
@@ -43,18 +46,24 @@ const properties = [
     type: "Bungalow",
     bedrooms: 2,
     bathrooms: 1,
-    image: "https://res.cloudinary.com/dlu8e511s/image/upload/v1758719708/0681e23b2ee125-luxury-3-bedroom-waterfront-apartment-for-rent-banana-island-ikoyi-lagos_a8p7pk.jpg",
+    image:
+      "https://res.cloudinary.com/dlu8e511s/image/upload/v1758719708/0681e23b2ee125-luxury-3-bedroom-waterfront-apartment-for-rent-banana-island-ikoyi-lagos_a8p7pk.jpg",
     link: "/cozy-bungalow",
   },
 ];
 
 const HomePage = () => {
   const [filteredProperties, setFilteredProperties] = useState(properties);
-
+  const userData = JSON.parse(localStorage.getItem("userData"));
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const propertiesPerPage = 2; // show 2 per page (change as needed)
-
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!userData) {
+      navigate("/login");
+    }
+  }, []);
   // Handle search
   const handleSearch = (query) => {
     const results = properties.filter(
@@ -126,7 +135,11 @@ const HomePage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {currentProperties.length > 0 ? (
             currentProperties.map((property) => (
-              <Link key={property.id} to={property.link} className="cursor-pointer">
+              <Link
+                key={property.id}
+                to={property.link}
+                className="cursor-pointer"
+              >
                 <PropertyCard property={property} />
               </Link>
             ))
@@ -162,7 +175,9 @@ const HomePage = () => {
             ))}
 
             <button
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
               disabled={currentPage === totalPages}
               className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
             >

@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 // Layout
 import Header from "./components/Header";
@@ -27,6 +32,7 @@ import ModernDuplex1 from "./pages/ModernDuplex1";
 import ModernDuplex2 from "./pages/ModernDuplex2";
 import CozyBungalow1 from "./pages/CozyBungalow1";
 import CozyBungalow2 from "./pages/CozyBungalow2";
+
 function App() {
   const [token, setToken] = useState(null);
   const [userData, setUserData] = useState(null);
@@ -56,23 +62,10 @@ function App() {
       <Header token={token} userData={userData} onLogout={handleLogout} />
       <main className="min-h-screen">
         <Routes>
-          {/* Default redirect */}
-          <Route
-            path="/"
-            element={
-              token ? (
-                userData?.role === "admin" ? (
-                  <Navigate to="/admin-dashboard" replace />
-                ) : (
-                  <Navigate to="/dashboard" replace />
-                )
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
+          {/* Home should always be public */}
+          <Route path="/" element={<HomePage />} />
 
-          {/* Public Pages */}
+          {/* Public property showcase pages */}
           <Route path="/LuxuryApartment" element={<LuxuryApartment />} />
           <Route path="/BeachHouse" element={<BeachHouse />} />
           <Route path="/ModernDuplex" element={<ModernDuplex />} />
@@ -91,11 +84,11 @@ function App() {
           {/* Auth Pages */}
           <Route
             path="/register"
-            element={!token ? <RegisterPage /> : <Navigate to="/home" replace />}
+            element={!token ? <RegisterPage /> : <Navigate to="/" replace />}
           />
           <Route
             path="/login"
-            element={!token ? <LoginPage onLogin={handleLogin} /> : <Navigate to="/home" replace />}
+            element={!token ? <LoginPage onLogin={handleLogin} /> : <Navigate to="/" replace />}
           />
 
           {/* Protected Pages */}
@@ -120,10 +113,6 @@ function App() {
                 <Navigate to="/login" replace />
               )
             }
-          />
-          <Route
-            path="/home"
-            element={token ? <HomePage /> : <Navigate to="/login" replace />}
           />
           <Route
             path="/add-property"
