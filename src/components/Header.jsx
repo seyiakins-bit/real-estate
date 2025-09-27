@@ -16,8 +16,10 @@ const Header = ({ token, userData, onLogout }) => {
     <header className="bg-blue-600 text-white p-4 flex justify-between items-center">
       {/* Logo + Site Name */}
       <div className="flex items-center gap-2">
-        <img src={Logo} alt="Logo" className="w-10 h-10 object-contain" />
-        <Link to="/home" className="text-xl font-bold">
+        <Link to="/"> {/* ✅ Logo now redirects to landing page */}
+          <img src={Logo} alt="Logo" className="w-10 h-10 object-contain" />
+        </Link>
+        <Link to="/" className="text-xl font-bold">
           Akins Luxury Homes
         </Link>
       </div>
@@ -25,7 +27,7 @@ const Header = ({ token, userData, onLogout }) => {
       {/* Navigation */}
       <nav className="flex gap-4 items-center">
         {/* Home always available if logged in */}
-        {token && <Link to="/home" className="hover:text-gray-200">Home</Link>}
+        {token && <Link to="/" className="hover:text-gray-200">Home</Link>}
 
         {/* Dashboards */}
         {token && userRole === "user" && (
