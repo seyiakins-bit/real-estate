@@ -88,7 +88,13 @@ function App() {
           />
           <Route
             path="/login"
-            element={!token ? <LoginPage onLogin={handleLogin} /> : <Navigate to="/" replace />}
+            element={
+              !token ? (
+                <LoginPage onLogin={handleLogin} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
           />
 
           {/* Protected Pages */}
@@ -116,15 +122,20 @@ function App() {
           />
           <Route
             path="/add-property"
-            element={token ? <AddPropertyPage /> : <Navigate to="/login" replace />}
+            element={
+              token ? <AddPropertyPage /> : <Navigate to="/login" replace />
+            }
           />
           <Route
             path="/edit-property/:id"
-            element={token ? <EditPropertyPage /> : <Navigate to="/login" replace />}
+            element={
+              token ? <EditPropertyPage /> : <Navigate to="/login" replace />
+            }
           />
         </Routes>
       </main>
-      <Footer />
+      {/* ✅ Pass auth info into Footer */}
+      <Footer isLoggedIn={!!token} onLogout={handleLogout} />
     </Router>
   );
 }

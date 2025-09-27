@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaFacebookF,
   FaTwitter,
@@ -8,7 +8,14 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 
-const Footer = () => {
+const Footer = ({ isLoggedIn, onLogout }) => {
+  const navigate = useNavigate();
+
+  const handleLogoutClick = () => {
+    onLogout();            // ✅ clear auth
+    navigate("/login");    // ✅ redirect to login page
+  };
+
   return (
     <footer className="bg-gray-900 text-gray-300 pt-12">
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -20,44 +27,19 @@ const Footer = () => {
             Find your dream property in Nigeria with our curated listings of residential and commercial properties.
           </p>
           <div className="flex gap-3 text-xl">
-            <a
-              href="https://wa.me/2347039443290"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-            >
+            <a href="https://wa.me/2347039443290" target="_blank" rel="noopener noreferrer" className="hover:text-white">
               <FaWhatsapp />
             </a>
-            <a
-              href="https://facebook.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-            >
+            <a href="https://facebook.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white">
               <FaFacebookF />
             </a>
-            <a
-              href="https://twitter.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-            >
+            <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white">
               <FaTwitter />
             </a>
-            <a
-              href="https://instagram.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-            >
+            <a href="https://instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white">
               <FaInstagram />
             </a>
-            <a
-              href="https://linkedin.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-white"
-            >
+            <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white">
               <FaLinkedinIn />
             </a>
           </div>
@@ -71,8 +53,23 @@ const Footer = () => {
             <li><Link to="/add-property" className="hover:text-white">Add Property</Link></li>
             <li><Link to="/dashboard" className="hover:text-white">User Dashboard</Link></li>
             <li><Link to="/admin-dashboard" className="hover:text-white">Admin Dashboard</Link></li>
-            <li><Link to="/login" className="hover:text-white">Login</Link></li>
-            <li><Link to="/register" className="hover:text-white">Register</Link></li>
+
+            {!isLoggedIn ? (
+              <>
+                <li><Link to="/login" className="hover:text-white">Login</Link></li>
+                <li><Link to="/register" className="hover:text-white">Register</Link></li>
+              </>
+            ) : (
+              <li>
+                {/* ✅ Button instead of Link */}
+                <button
+                  onClick={handleLogoutClick}
+                  className="hover:text-white text-left"
+                >
+                  Logout
+                </button>
+              </li>
+            )}
           </ul>
         </div>
 
